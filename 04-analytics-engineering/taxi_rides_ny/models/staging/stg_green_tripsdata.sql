@@ -21,11 +21,12 @@ select
     cast(pickup_datetime as timestamp) as pickup_datetime,
     cast(dropoff_datetime as timestamp) as dropoff_datetime,
 
-    -- trip info
-    store_and_fwd_flag,
+   store_and_fwd_flag,
     {{ dbt.safe_cast("passenger_count", api.Column.translate_type("integer")) }} as passenger_count,
     cast(trip_distance as numeric) as trip_distance,
-    null as trip_type,  -- column not available in your schema
+    -- yellow cabs are always street-hail
+    1 as trip_type,
+    
 
     -- payment info
     cast(fare_amount as numeric) as fare_amount,

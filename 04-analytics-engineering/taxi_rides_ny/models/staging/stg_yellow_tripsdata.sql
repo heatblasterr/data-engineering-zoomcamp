@@ -1,7 +1,7 @@
 {{ config(materialized='view') }}
 
 with tripdata as (
-  select *,
+  select * ,
     row_number() over(partition by vendor_id, pickup_datetime) as rn
   from {{ source('staging', 'yellow_tripsdata') }}
   where vendor_id is not null
@@ -23,11 +23,7 @@ select
   store_and_fwd_flag,
   {{ dbt.safe_cast("passenger_count", api.Column.translate_type("integer")) }} as passenger_count,
   cast(trip_distance as numeric) as trip_distance,
-  {{ dbt.safe_cast("trip_type", api.Column.translate_type("integer")) }} as trip_type,
-
-  -- additional trip metrics
-  cast(distance_between_service as numeric) as distance_between_service,
-  {{ dbt.safe_cast("time_between_service", api.Column.translate_type("integer")) }} as time_between_service,
+  1 as trip_type,
 
   -- payment info
   cast(fare_amount as numeric) as fare_amount,
@@ -35,7 +31,6 @@ select
   cast(mta_tax as numeric) as mta_tax,
   cast(tip_amount as numeric) as tip_amount,
   cast(tolls_amount as numeric) as tolls_amount,
-  cast(ehail_fee as numeric) as ehail_fee,
   cast(imp_surcharge as numeric) as improvement_surcharge,
   cast(airport_fee as numeric) as airport_fee,
   cast(total_amount as numeric) as total_amount,
