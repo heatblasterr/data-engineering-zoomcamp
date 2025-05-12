@@ -102,7 +102,7 @@ models:
 
       - name: tip_amount
         data_type: numeric
-        description: ""
+        description: " deshoid "
 
       - name: tolls_amount
         data_type: numeric
